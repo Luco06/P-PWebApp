@@ -45,8 +45,8 @@ export default function Header({avatar, pseudo}: Header) {
               className="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10"
               onClick={() => setIsOpen(false)} 
             >
-              <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profil</a>
-              <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Paramètres</a>
+              <Link href="/profil" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Profil</Link>
+              <Link href="/setting" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Paramètres</Link>
               <button onClick={handleLogOut} className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Déconnexion</button>
             </div>
           )}
