@@ -6,7 +6,6 @@ import React from "react";
 
 dotenv.config
 function makeClient() {
-    console.log(process.env.NEXT_PUBLIC_API_URL,"urlgraphql")
     let token = null;
 
     if (typeof window !== "undefined") {
