@@ -7,6 +7,8 @@ import { LOGIN_USER } from '@/services/auth';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
 import { UserAtom } from '../utils/atoms';
+import Input from '../components/Input';
+import Button from '../components/Button';
 type FormProps = {}
 
 export default function FormLogIn({}: FormProps) {
@@ -38,17 +40,11 @@ export default function FormLogIn({}: FormProps) {
       <h1>Pages & Papilles</h1>
       <h3 >Connexion</h3>
       <form onSubmit={handleLogin}>
-      <button type='button' className='drop-shadow-md flex flex-row justify-center items-center gap-3 cursor-pointer gap- block w-96 m-auto mt-4 rounded-full bg-white px-3.5 py-2.5 text-center text-sm font-semibold text-colortxt shadow-xs  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'> <FcGoogle size={30}/> Se connecter avec Google</button>
-        <div className="mt-4 m-auto">
-        <label className="block text-sm/6 text-colortxt">E-mail</label>
-          <input type="email" value={email} onChange={(e)=> setEmail(e.target.value)} name="email" id="email" required className=" drop-shadow-md block w-96 h-11 rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-redpapilles sm:text-sm/6"/>
-        </div>
-        <div className="mt-4 m-auto">
-        <label className="block text-sm/6 text-colortxt">Mot de passe</label>
-          <input type="password" value={mdp} onChange={(e)=> setMdp(e.target.value)} name="password" id="password" required className=" drop-shadow-md block w-96 h-11 rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-redpapilles sm:text-sm/6"/>
-        </div>
+        <Button type='button' onClick={()=> console.log("Connexion avec GOOGLE")} className='w-96' txt={<> <FcGoogle size={30}/> Se connecter avec Google</>} />
+        <Input className='w-96' required={true} label='Email' type='email' value={email} onChange={(e)=>  setEmail(e.target.value)} name='email' id='email'/>
+        <Input className='w-96' required={true} label='Mot de passe' type='password' value={mdp} onChange={(e)=>  setMdp(e.target.value)} name='password' id='paswword'/>
         <p className='text-right mt-4 mb-4'>Mot de passe oublié?</p>
-        <button type='submit' className='drop-shadow-lg cursor-pointer block w-32 m-auto mt-4 rounded-md bg-white px-3.5 py-2.5 text-center text-sm font-semibold text-colortxt shadow-xs hover:bg-redpapilles hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Se connecter</button>
+        <Button type='submit' txt='Se connecter' className='w-32 rounded-md hover:bg-redpapilles hover:text-white '  />
         {error && <p>Error: {error.message}</p>}
       </form>
 
