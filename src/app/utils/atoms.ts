@@ -5,6 +5,7 @@ type UserType  ={
     prenom: string;
     avatar: string;
     pseudo: string;
+    id: string;
     recettes: [];
 }
 
