@@ -9,6 +9,7 @@ mutation LoginUser($email: String!, $mdp: String!){
             email
             nom
             prenom
+            avatar
         }
     }
 }
