@@ -11,6 +11,14 @@ type AvatarProps = {
 
 export default function Avatar({src, alt, width, height}: AvatarProps) {
   return (
-    <Image className="rounded-full object-cover border border-redpapilles" src={src} alt={alt} width={width} height={height}/>
+<div className="w-[150px] h-[150px] rounded-full overflow-hidden border border-redpapilles flex items-center justify-center">
+  <Image 
+    className="object-cover object-center " 
+    src={src} 
+    alt={alt} 
+    width={width} 
+    height={height} 
+  />
+</div>
   )
 }
