@@ -24,7 +24,9 @@ export default function Header({avatar, pseudo}: Header) {
     }
   return (
     <div className='bg-redpapilles fixed top-0 w-full flex flex-row justify-between p-3 items-center'>
+      <Link href="/home">
         <h1 className='text-white w-30'>Pages & Papilles</h1>
+      </Link>
         {isConnected ? (
         <div className="relative flex items-center gap-3 flex-grow">
           <h3 className="text-white flex-1 text-center"> Bonjour, {pseudo ?? user?.prenom}</h3>
