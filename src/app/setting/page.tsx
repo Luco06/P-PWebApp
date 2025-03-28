@@ -81,7 +81,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     <>
     <div className='flex flex-col items-center jutify-center  m-auto w-lg mt-10'>
       <Avatar src={userInfo?.avatar || '/bobMartin.svg'} width={100} height={100} alt='Bob'/>
-      <Input type='file' label='Ajouter une image' name='avatar' id='avatar' required={false} onChange={handleImageChange}  className='text-redpapilles'/>
+      <Input type='file' name='avatar' id='avatar' required={false} onChange={handleImageChange}  className='text-redpapilles'/>
       <div className='flex flex-col items-start text-left m-auto w-sm mt-10' >
       <p className='text-redpapilles'>Prénom: {userInfo?.prenom}</p>
       <p className='text-redpapilles'>Nom: {userInfo?.nom}</p>
