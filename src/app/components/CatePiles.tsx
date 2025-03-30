@@ -5,17 +5,38 @@ import Button from './Button'
 type Props = {}
 
 export default function CatePiles({}: Props) {
+  const Categories = [
+    {
+    id:1,
+    txt:"Viande"
+  },
+  {
+    id:2,
+    txt:"Poisson"
+  },
+  {
+    id:3,
+    txt:"Végétarien"
+  },
+  {
+    id:4,
+    txt:"Desserts"
+  },
+  {
+    id:5,
+    txt:"Boissons"
+  },
+  {
+    id:6,
+    txt:"Sauces"
+  },
+  ]
   return (
     <>
-   <div className='flex flex-row w-2xl justify-between items-center m-auto'>
-        <Button type='button' txt='Viande' className='w-50'/>
-        <Button type='button' txt='Poisson' className='w-50'/>
-        <Button type='button' txt='Végétarien' className='w-50'/>
-    </div>
-    <div className='flex flex-row w-2xl justify-between items-center m-auto'>
-        <Button type='button' txt='Desserts' className='w-50'/>
-        <Button type='button' txt='Boissons' className='w-50'/>
-        <Button type='button' txt='Sauces' className='w-50'/>
+   <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-5xl'>
+    {Categories.map((categorie)=>(
+      <Button key={categorie.id} type='button' txt={categorie.txt} className='w-45'/>
+    ))}
     </div>
     </>
   
