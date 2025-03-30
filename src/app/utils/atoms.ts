@@ -9,7 +9,8 @@ type UserType  ={
     recettes: RecipeType[];
 }
 
-type RecipeType = {
+ export type RecipeType = {
+    id: string;
     titre: string;
     description: string;
     ingredients: string[];
@@ -18,13 +19,15 @@ type RecipeType = {
     nb_person: string;
     dificulty: string;
     est_public: boolean;
-    cout:string;
+    cout: string;
     note: string;
     instructions: string;
     categorie: string;
     img: string;
     favoris: boolean;
-    auteur: string;
+    auteur: {
+        prenom: string;
+    };
     dateCreation: string;
     commentaire: string[];
 }
