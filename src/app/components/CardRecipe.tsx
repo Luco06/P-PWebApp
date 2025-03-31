@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import Image from 'next/image'
 
 type CardRecipeProps = {
     auteur: string
@@ -23,7 +24,9 @@ export default function CardRecipe({titre, dificulty, bgImage,auteur, cuission, 
         <h4 className='drop-shadow-md'>{titre}</h4>
         <h5 className='drop-shadow-md'> Par: {auteur}</h5>
       </div>
-
+      <div className="flex-grow relative w-full h-[300px]">
+        <Image src={bgImage} alt={titre} fill className="object-cover"/>
+      </div>
       {/* Bandeau inférieur fixé en bas */}
       <div className='bg-redpapilles w-full border-8 border-redpapilles rounded-b-lg grid grid-cols-3 justify-center items-center '>
       <p className="text-white drop-shadow-md">Couvert: {couvert} </p>
