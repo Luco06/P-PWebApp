@@ -19,11 +19,11 @@ export default function Header({avatar, pseudo}: Header) {
 
     const handleLogOut = ()=>{
       setUser(null)
+      router.push('/home')
       localStorage.clear()
-     router.push('/home')
     }
   return (
-    <div className='bg-redpapilles fixed top-0 w-full flex flex-row justify-between p-3 items-center'>
+    <div className='bg-redpapilles relative top-0 w-full flex flex-row justify-between p-3 items-center'>
       <Link href="/home">
         <h1 className='text-white w-30'>Pages & Papilles</h1>
       </Link>

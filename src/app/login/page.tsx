@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '@/services/auth';
+import { LOGIN_USER } from '@/services/mutations/auth';
 import { useRouter } from 'next/navigation';
 import { useSetAtom } from 'jotai';
 import { UserAtom } from '../utils/atoms';

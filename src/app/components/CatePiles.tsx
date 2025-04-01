@@ -35,7 +35,7 @@ export default function CatePiles({}: Props) {
     <>
    <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-5xl'>
     {Categories.map((categorie)=>(
-      <Button key={categorie.id} type='button' txt={categorie.txt} className='w-45'/>
+      <Button key={categorie.id} type='button' txt={categorie.txt} className='w-40'/>
     ))}
     </div>
     </>

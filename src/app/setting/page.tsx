@@ -7,7 +7,8 @@ import Input from "../components/Input";
 import { UserAtom } from "../utils/atoms";
 import { useAtomValue } from "jotai";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER } from "@/services/updateUser";
+import { UPDATE_USER } from "@/services/mutations/updateUser";
+import { GET_USER } from "@/services/query/user";
 
 type Props = {};
 
@@ -35,6 +36,7 @@ export default function Setting({}: Props) {
         Authorization: `Bearer ${token}`,
       },
     },
+    refetchQueries: [GET_USER],
     onCompleted(data) {
       alert("Profile mise à jour !");
     },

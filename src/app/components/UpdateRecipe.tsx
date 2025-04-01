@@ -5,19 +5,19 @@ import Button from "./Button";
 import Image from "next/image";
 import ToggleSwitch from "./ToggleSwitch";
 import { useMutation } from "@apollo/client";
-import { UPDATE_RECIPE } from "@/services/updateRecipe";
+import { UPDATE_RECIPE } from "@/services/mutations/updateRecipe";
 import { RecipeType } from "../utils/atoms";
+import { GET_USER } from "@/services/query/user";
 
 interface UpdateRecipeProps {
   recipe: RecipeType | null;
+  setIsModalOpen: (value: boolean) => void;
 }
 
-export default function UpdateRecipe({ recipe }: UpdateRecipeProps) {
+export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipeProps) {
   const [token, setToken] = useState<string | null>(null);
   const [isPublic, setIsPublic] = useState(recipe?.est_public ?? false);
   const [isFavoris, setIsFavoris] = useState(recipe?.favoris ?? false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false);
   const [recipeUpdate, setRecipeUpdate] = useState({
     titre: recipe?.titre || "",
     description: recipe?.description || "",
@@ -46,12 +46,32 @@ export default function UpdateRecipe({ recipe }: UpdateRecipeProps) {
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
+  
       reader.onloadend = () => {
-        setRecipeUpdate((prev) => ({ ...prev, img: reader.result as string }));
+        const img = document.createElement("img");
+        img.src = reader.result as string;
+  
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+  
+          if (!ctx) return;
+  
+          const maxWidth = 500; // Définis la largeur max
+          const scale = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scale;
+  
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+          // Convertir en base64 avec compression
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7); // 0.7 = qualité
+  
+          setRecipeUpdate((prev) => ({ ...prev, img: compressedDataUrl }));
+        };
       };
     }
   };
-
   // Gérer le changement des ingrédients
   const handleIngredientChange = (index: number, value: string) => {
     const newIngredients = [...recipeUpdate.ingredients];
@@ -107,8 +127,10 @@ export default function UpdateRecipe({ recipe }: UpdateRecipeProps) {
         Authorization: `Bearer ${token}`,
       },
     },
+    refetchQueries: [GET_USER],
     onCompleted: () => {
       alert("Recette mise à jour !");
+      setIsModalOpen(false)
     },
   });
   return (
@@ -162,7 +184,7 @@ export default function UpdateRecipe({ recipe }: UpdateRecipeProps) {
               value={ingredient}
               onChange={(e) => handleIngredientChange(index, e.target.value)}
               label={`Ingrédient ${index + 1}`}
-              className="w-40"
+              className="w-60"
             />
             <button
               type="button"
@@ -300,6 +322,11 @@ export default function UpdateRecipe({ recipe }: UpdateRecipeProps) {
           }}
           className="text-redpapilles w-50 border boder-redpapilles"
           txt="Mettre à jour"
+        />
+             <Button
+          onClick={() => setIsModalOpen(false) }
+          className="text-redpapilles w-50 border boder-redpapilles"
+          txt="Fermer"
         />
       </div>
     </div>

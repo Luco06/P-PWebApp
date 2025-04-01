@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { useMutation } from '@apollo/client';
-import { SINGN_USER } from '@/services/singn';
+import { SINGN_USER } from '@/services/mutations/singn';
 import { useRouter } from 'next/navigation';
 import Button from '../components/Button';
 import Input from "../components/Input"

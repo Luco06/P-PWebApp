@@ -35,7 +35,7 @@ export default function Input({
         name={name}
         id={id}
         required={required}
-        className={`drop-shadow-md block h-11 rounded-full bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-redpapilles sm:text-sm/6 ${className}`}
+        className={`drop-shadow-md block h-11 rounded-xl bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-redpapilles sm:text-sm/6 ${className}`}
       />
     </div>
   );
