@@ -8,6 +8,8 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_RECIPE } from "@/services/mutations/updateRecipe";
 import { RecipeType } from "../utils/atoms";
 import { GET_USER } from "@/services/query/user";
+import { useAtomValue } from "jotai";
+import { UserAtom } from "../utils/atoms";
 
 interface UpdateRecipeProps {
   recipe: RecipeType | null;
@@ -15,6 +17,7 @@ interface UpdateRecipeProps {
 }
 
 export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipeProps) {
+  const userInfo = useAtomValue(UserAtom)
   const [token, setToken] = useState<string | null>(null);
   const [isPublic, setIsPublic] = useState(recipe?.est_public ?? false);
   const [isFavoris, setIsFavoris] = useState(recipe?.favoris ?? false);
@@ -127,10 +130,10 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
         Authorization: `Bearer ${token}`,
       },
     },
-    refetchQueries: [GET_USER],
+    refetchQueries: [{query:GET_USER, variables: { userId: userInfo?.id }}],
     onCompleted: () => {
-      alert("Recette mise à jour !");
       setIsModalOpen(false)
+      alert("Recette mise à jour !");
     },
   });
   return (

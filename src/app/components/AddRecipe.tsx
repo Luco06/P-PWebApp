@@ -130,10 +130,10 @@ export default function AddRecipe({setIsAddModal}: AddRecipeProps) {
             Authorization: `Bearer ${token}`,
           },
         },
-        refetchQueries: [GET_USER],
+        refetchQueries: [{query:GET_USER, variables: { userId: userInfo?.id }}],
         onCompleted: () => {
-          alert("Recette Ajouter !");
           setIsAddModal(false)
+          alert("Recette Ajouter !");
         },
       });
       const handleCreate = async(e: any)=>{

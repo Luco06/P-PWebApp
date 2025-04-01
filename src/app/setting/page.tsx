@@ -36,7 +36,7 @@ export default function Setting({}: Props) {
         Authorization: `Bearer ${token}`,
       },
     },
-    refetchQueries: [GET_USER],
+    refetchQueries: [{query:GET_USER, variables: { userId: userInfo?.id }}],
     onCompleted(data) {
       alert("Profile mise à jour !");
     },
