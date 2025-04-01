@@ -7,7 +7,6 @@ import CatePiles from "../components/CatePiles";
 import CardRecipesprofile from "../components/CardRecipesProfile";
 import CardRecipe from "../components/CardRecipe";
 import { UserAtom } from "../utils/atoms";
-import { useAtomValue } from "jotai";
 import { useAtom } from "jotai";
 import { RecipeType } from "../utils/atoms";
 import Button from "../components/Button";
@@ -29,17 +28,23 @@ export default function Profil() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModal, setIsAddModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const {data} = useQuery(GET_USER)
+  const { data } = useQuery(GET_USER, {
+    variables: { userId: userInfo?.id },
+    skip: !userInfo?.id, 
+  });
 
   useEffect(() => {
     if (data) {
-      setUserInfo(data);
+      setUserInfo((prev) => (prev ? { ...prev, ...data } : data));
     }
-
+  }, [data, setUserInfo]);
+  
+  console.log(data?.user.recettes,"data")
+  useEffect(() => {
     if (Array.isArray(userInfo?.recettes)) {
-      setRecipes(userInfo.recettes);
+      setRecipes(data?.user.recettes);
     }
-  }, [data ,userInfo, recipes]);
+  }, [userInfo]);
 
   const handleRecipeClick = (recipe: RecipeType) => {
     setSelectedRecipe(recipe);
@@ -49,9 +54,6 @@ export default function Profil() {
   const handleAddRecipe = () => {
     setIsAddModal(!isAddModal);
   };
-
-  console.log(recipes);
-  console.log(selectedRecipe);
   return (
     <>
       <Header />
