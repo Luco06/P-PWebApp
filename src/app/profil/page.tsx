@@ -22,15 +22,16 @@ export default function Profil() {
 
   // ✅ Utilisation d'un state local pour stocker les recettes affichées
   const [recipes, setRecipes] = useState<RecipeType[]>(
-    userInfo?.recettes || []
+    userInfo?.recettes ?? []
   );
+
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModal, setIsAddModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const { data } = useQuery(GET_USER, {
     variables: { userId: userInfo?.id },
-    skip: !userInfo?.id, 
+    skip: !userInfo?.id,
   });
 
   useEffect(() => {
@@ -38,8 +39,8 @@ export default function Profil() {
       setUserInfo((prev) => (prev ? { ...prev, ...data } : data));
     }
   }, [data, setUserInfo]);
-  
-  console.log(data?.user.recettes,"data")
+
+  console.log(data?.user.recettes, "data");
   useEffect(() => {
     if (Array.isArray(userInfo?.recettes)) {
       setRecipes(data?.user.recettes);
@@ -75,10 +76,11 @@ export default function Profil() {
           {userInfo?.prenom} {userInfo?.nom}
         </p>
         <InfoRecipes
-          recettes={recipes.length}
-          publique={recipes.length}
-          favoris={recipes.length}
+          recettes={recipes?.length || 0}
+          publique={recipes?.length || 0}
+          favoris={recipes?.length || 0}
         />
+
         <CatePiles />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center w-full max-w-5xl m-auto mb-20 my-6">
           {recipes?.map((recipes) => (
@@ -97,7 +99,10 @@ export default function Profil() {
             <div className="bg-white p-4 rounded max-w-lg shadow-lg max-h-[80vh] overflow-y-auto">
               {isUpdate ? (
                 <>
-                  <UpdateRecipe setIsModalOpen={setIsModalOpen} recipe={selectedRecipe} />
+                  <UpdateRecipe
+                    setIsModalOpen={setIsModalOpen}
+                    recipe={selectedRecipe}
+                  />
                 </>
               ) : (
                 <>
@@ -136,13 +141,13 @@ export default function Profil() {
             </div>
           </div>
         )}
-         {isAddModal &&
-          (<div className="fixed inset-0 bg-opacity-50 flex items-center justify-center overflow-y-auto">
-             <div className="bg-white p-4 rounded max-w-lg shadow-lg max-h-[80vh] overflow-y-auto">
-           <AddRecipe setIsAddModal={setIsAddModal} recipe={null}/>
-           </div>
-         </div>
-           )}
+        {isAddModal && (
+          <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center overflow-y-auto">
+            <div className="bg-white p-4 rounded max-w-lg shadow-lg max-h-[80vh] overflow-y-auto">
+              <AddRecipe setIsAddModal={setIsAddModal} recipe={null} />
+            </div>
+          </div>
+        )}
         <Footer />
       </div>
     </>
