@@ -14,14 +14,13 @@ type Props = {};
 
 export default function Setting({}: Props) {
   const userInfo = useAtomValue(UserAtom);
-  const [token, setToken] = useState<string | null>(null); // État local pour le token
+  const [token, setToken] = useState<string | null>(null);
   const [userUpdate, setUserUpdate] = useState({
     mdp: "",
     pseudo: "",
     avatar: "",
   });
   useEffect(() => {
-    // Lire le token de localStorage uniquement côté client
     const storedToken = localStorage.getItem("authToken");
     setToken(storedToken);
 
@@ -36,7 +35,7 @@ export default function Setting({}: Props) {
         Authorization: `Bearer ${token}`,
       },
     },
-    refetchQueries: [{query:GET_USER, variables: { userId: userInfo?.id }}],
+    refetchQueries: [{ query: GET_USER, variables: { userId: userInfo?.id } }],
     onCompleted(data) {
       alert("Profile mise à jour !");
     },
@@ -47,7 +46,7 @@ export default function Setting({}: Props) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        setUserUpdate({ ...userUpdate, avatar: reader.result as string }); // Stocke l'image en base64
+        setUserUpdate({ ...userUpdate, avatar: reader.result as string });
       };
     }
   };
@@ -60,7 +59,6 @@ export default function Setting({}: Props) {
       );
       return;
     }
-    // Filtrer les valeurs vides
     const filteredUpdate = Object.fromEntries(
       Object.entries(userUpdate).filter(([_, value]) => value !== "")
     );

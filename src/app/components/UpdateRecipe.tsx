@@ -10,30 +10,34 @@ import { RecipeType } from "../utils/atoms";
 import { GET_USER } from "@/services/query/user";
 import { useAtomValue } from "jotai";
 import { UserAtom } from "../utils/atoms";
+import SelectOption from "./SelectOption";
 
 interface UpdateRecipeProps {
   recipe: RecipeType | null;
   setIsModalOpen: (value: boolean) => void;
 }
 
-export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipeProps) {
-  const userInfo = useAtomValue(UserAtom)
+export default function UpdateRecipe({
+  recipe,
+  setIsModalOpen,
+}: UpdateRecipeProps) {
+  const userInfo = useAtomValue(UserAtom);
   const [token, setToken] = useState<string | null>(null);
   const [isPublic, setIsPublic] = useState(recipe?.est_public ?? false);
   const [isFavoris, setIsFavoris] = useState(recipe?.favoris ?? false);
   const [recipeUpdate, setRecipeUpdate] = useState({
     titre: recipe?.titre || "",
     description: recipe?.description || "",
-    ingredients: Array.isArray(recipe?.ingredients) ? recipe.ingredients : [""], // Assurez-vous que c'est un tableau
+    ingredients: Array.isArray(recipe?.ingredients) ? recipe.ingredients : [""],
     instructions: Array.isArray(recipe?.instructions)
       ? recipe.instructions
-      : [""], // Assurez-vous que c'est un tableau
+      : [""],
     nb_person: recipe?.nb_person || "",
     tps_cook: recipe?.tps_cook || "",
     tps_prep: recipe?.tps_prep || "",
     categorie: recipe?.categorie || "",
     dificulty: recipe?.dificulty || "",
-    img: "",
+    img: recipe?.img || "",
     est_public: recipe?.est_public ?? false,
     note: recipe?.note || "",
     favoris: recipe?.favoris ?? false,
@@ -49,40 +53,36 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-  
+
       reader.onloadend = () => {
         const img = document.createElement("img");
         img.src = reader.result as string;
-  
+
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
-  
+
           if (!ctx) return;
-  
-          const maxWidth = 500; // Définis la largeur max
+
+          const maxWidth = 500;
           const scale = maxWidth / img.width;
           canvas.width = maxWidth;
           canvas.height = img.height * scale;
-  
+
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  
-          // Convertir en base64 avec compression
-          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7); // 0.7 = qualité
-  
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
+
           setRecipeUpdate((prev) => ({ ...prev, img: compressedDataUrl }));
         };
       };
     }
   };
-  // Gérer le changement des ingrédients
   const handleIngredientChange = (index: number, value: string) => {
     const newIngredients = [...recipeUpdate.ingredients];
-    newIngredients[index] = value; // Modifie directement la valeur de l'index
+    newIngredients[index] = value;
     setRecipeUpdate({ ...recipeUpdate, ingredients: newIngredients });
   };
 
-  // Ajouter un ingrédient
   const addIngredient = () => {
     setRecipeUpdate({
       ...recipeUpdate,
@@ -107,7 +107,6 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
     }
   };
 
-  // Ajouter une instruction
   const addInstruction = () => {
     setRecipeUpdate({
       ...recipeUpdate,
@@ -130,15 +129,14 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
         Authorization: `Bearer ${token}`,
       },
     },
-    refetchQueries: [{query:GET_USER, variables: { userId: userInfo?.id }}],
+    refetchQueries: [{ query: GET_USER, variables: { userId: userInfo?.id } }],
     onCompleted: () => {
-      setIsModalOpen(false)
+      setIsModalOpen(false);
       alert("Recette mise à jour !");
     },
   });
   return (
     <div className="flex flex-col items-center justify-center">
-        
       {recipeUpdate.img && (
         <Image src={recipeUpdate.img} alt="pates" width={160} height={130} />
       )}
@@ -235,7 +233,6 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
         />
       </div>
 
-      {/* Autres champs de la recette */}
       <div className="flex flex-col-2 justify-between items-center w-full">
         <Input
           id="personnes"
@@ -247,18 +244,6 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
             setRecipeUpdate({ ...recipeUpdate, nb_person: e.target.value })
           }
           label="Personnes"
-          className="w-30"
-        />
-        <Input
-          id="cuisson"
-          required={false}
-          type="text"
-          name="cuisson"
-          value={recipeUpdate.tps_cook}
-          onChange={(e) =>
-            setRecipeUpdate({ ...recipeUpdate, tps_cook: e.target.value })
-          }
-          label="Cuisson"
           className="w-30"
         />
       </div>
@@ -276,31 +261,53 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
           className="w-30"
         />
         <Input
-          type="text"
-          name="categorie"
-          id="categorie"
+          id="cuisson"
           required={false}
-          value={recipeUpdate.categorie}
+          type="text"
+          name="cuisson"
+          value={recipeUpdate.tps_cook}
           onChange={(e) =>
-            setRecipeUpdate({ ...recipeUpdate, categorie: e.target.value })
+            setRecipeUpdate({ ...recipeUpdate, tps_cook: e.target.value })
           }
-          label="Catégorie"
+          label="Cuisson"
           className="w-30"
         />
       </div>
-      <div className="flex justify-center items-center gap-x-4 w-full">
-        <Input
-          type="text"
-          name="difficulté"
-          id="difficulté"
-          required={false}
+      <div className="flex flex-col-2 justify-between items-center w-full">
+        <SelectOption
+          label="Difficulté"
+          name="difficulte"
+          options={[
+            { label: "Difficulté", value: "", disabled: true },
+            { label: "Facile", value: "Facile" },
+            { label: "Moyen", value: "Moyen" },
+            { label: "Difficile", value: "Difficile" },
+          ]}
           value={recipeUpdate.dificulty}
           onChange={(e) =>
             setRecipeUpdate({ ...recipeUpdate, dificulty: e.target.value })
           }
-          label="Difficulté"
-          className="w-35"
         />
+        <SelectOption
+          label="Catégorie"
+          name="categorie"
+          options={[
+            { label: "Catégorie", value: "", disabled: true },
+            { label: "Viande", value: "Viande" },
+            { label: "Végétarien", value: "Végétarien" },
+            { label: "Poisson", value: "Poisson" },
+            { label: "Desserts", value: "Desserts" },
+            { label: "Boissons", value: "Boissons" },
+            { label: "Sauce", value: "Sauce" },
+          ]}
+          value={recipeUpdate.categorie}
+          onChange={(e) =>
+            setRecipeUpdate({ ...recipeUpdate, categorie: e.target.value })
+          }
+        />
+      </div>
+
+      <div className="flex justify-around mt-3 items-center gap-x-4 w-full">
         <ToggleSwitch
           checked={isPublic}
           onChange={(checked) => {
@@ -321,13 +328,15 @@ export default function UpdateRecipe({ recipe, setIsModalOpen }: UpdateRecipePro
       <div className="flex flex-row items-center, justify-between ">
         <Button
           onClick={() => {
-            updateRecipe({ variables: { input: recipeUpdate, updateRecetteId:recipe?.id } });
+            updateRecipe({
+              variables: { input: recipeUpdate, updateRecetteId: recipe?.id },
+            });
           }}
           className="text-redpapilles w-50 border boder-redpapilles"
           txt="Mettre à jour"
         />
-             <Button
-          onClick={() => setIsModalOpen(false) }
+        <Button
+          onClick={() => setIsModalOpen(false)}
           className="text-redpapilles w-50 border boder-redpapilles"
           txt="Fermer"
         />

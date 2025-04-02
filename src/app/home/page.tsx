@@ -18,23 +18,26 @@ export default function Acceuil() {
 
   const { data } = useQuery(GET_RECIPE);
   useEffect(() => {
-    if (data) {
-      setRecipes(data?.recettes || []);
+    if (data?.recettes) {
+      const publicRecipes = data.recettes.filter(
+        (recipe: RecipeType) => recipe.est_public === true
+      );
+      setRecipes(publicRecipes);
     }
   }, [data, setRecipes]);
-  console.log(recipes, "recipe Home");
 
   const handleRecipeClick = (recipe: RecipeType) => {
     setSelectedRecipe(recipe);
     setIsModalOpen(true);
   };
+  console.log(recipes);
   return (
     <div>
       <Header
         avatar={user?.avatar || "/bobMartin.svg"}
         pseudo={user?.prenom || ""}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center w-full max-w-5xl m-auto mb-20 my-6">
+      <div className="grid auto-cols-max  sm:grid-cols-2 gap-4 place-items-center w-full max-w-5xl m-auto mb-20 my-6 place-content-center justify-items-center">
         {recipes?.map((recipes) => (
           <CardRecipesprofile
             key={recipes.id}
@@ -57,7 +60,6 @@ export default function Acceuil() {
                 couvert={selectedRecipe?.nb_person || ""}
                 tep_prep={selectedRecipe?.tps_prep || ""}
                 categorie={selectedRecipe?.categorie || ""}
-                favoris={selectedRecipe?.favoris ? "Oui" : "Non"}
                 ingredients={selectedRecipe?.ingredients || []}
                 instructions={
                   Array.isArray(selectedRecipe?.instructions)
@@ -65,14 +67,14 @@ export default function Acceuil() {
                     : []
                 }
               />
-                 <div className="flex flex-row items-center, justify-between ">
-                    <Button
-                      onClick={() => setIsModalOpen(false)}
-                      type="button"
-                      className="text-redpapilles w-50 border boder-redpapilles"
-                      txt="Fermer"
-                    />
-                  </div>
+              <div className="flex flex-row items-center, justify-between ">
+                <Button
+                  onClick={() => setIsModalOpen(false)}
+                  type="button"
+                  className="text-redpapilles w-50 border boder-redpapilles"
+                  txt="Fermer"
+                />
+              </div>
             </div>
           </div>
         )}

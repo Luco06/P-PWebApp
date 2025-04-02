@@ -20,12 +20,13 @@ import { useQuery } from "@apollo/client";
 export default function Profil() {
   const [userInfo, setUserInfo] = useAtom(UserAtom);
 
-  // ✅ Utilisation d'un state local pour stocker les recettes affichées
   const [recipes, setRecipes] = useState<RecipeType[]>(
     userInfo?.recettes ?? []
   );
 
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType | null>(null);
+  const [filteredRecipes, setFilteredRecipes] = useState<RecipeType[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModal, setIsAddModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -44,8 +45,22 @@ export default function Profil() {
   useEffect(() => {
     if (Array.isArray(userInfo?.recettes)) {
       setRecipes(data?.user.recettes);
+      setFilteredRecipes(data?.user.recettes);
     }
   }, [userInfo]);
+
+  const handleSelectCategory = (category: string) => {
+    const newCategory = selectedCategory === category ? null : category;
+    setSelectedCategory(newCategory);
+
+    if (newCategory) {
+      setFilteredRecipes(
+        recipes.filter((recipe) => recipe.categorie === newCategory)
+      );
+    } else {
+      setFilteredRecipes(recipes);
+    }
+  };
 
   const handleRecipeClick = (recipe: RecipeType) => {
     setSelectedRecipe(recipe);
@@ -55,6 +70,10 @@ export default function Profil() {
   const handleAddRecipe = () => {
     setIsAddModal(!isAddModal);
   };
+  console.log(recipes);
+  const publicRecipes = recipes.filter(
+    (recipe: RecipeType) => recipe.est_public === true
+  );
   return (
     <>
       <Header />
@@ -77,23 +96,33 @@ export default function Profil() {
         </p>
         <InfoRecipes
           recettes={recipes?.length || 0}
-          publique={recipes?.length || 0}
-          favoris={recipes?.length || 0}
+          publique={publicRecipes.length || 0}
+          favoris={userInfo?.favoris?.length || 0}
+        />
+        <CatePiles
+          onSelectCategory={handleSelectCategory}
+          selectedCategory={selectedCategory}
         />
 
-        <CatePiles />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center w-full max-w-5xl m-auto mb-20 my-6">
-          {recipes?.map((recipes) => (
-            <CardRecipesprofile
-              key={recipes.id}
-              titre={recipes.titre}
-              temps={recipes.tps_cook}
-              bgImage={recipes.img}
-              dificulty={recipes.dificulty}
-              onClick={() => handleRecipeClick(recipes)}
-            />
-          ))}
+          {filteredRecipes &&
+          Array.isArray(filteredRecipes) &&
+          filteredRecipes.length > 0 ? (
+            filteredRecipes.map((recipe) => (
+              <CardRecipesprofile
+                key={recipe.id}
+                titre={recipe.titre}
+                temps={recipe.tps_cook}
+                bgImage={recipe.img}
+                dificulty={recipe.dificulty}
+                onClick={() => handleRecipeClick(recipe)}
+              />
+            ))
+          ) : (
+            <p>Aucune recette trouvée dans cette catégorie.</p>
+          )}
         </div>
+
         {isModalOpen && (
           <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center overflow-y-auto">
             <div className="bg-white p-4 rounded max-w-lg shadow-lg max-h-[80vh] overflow-y-auto">
@@ -116,7 +145,6 @@ export default function Profil() {
                     couvert={selectedRecipe?.nb_person || ""}
                     tep_prep={selectedRecipe?.tps_prep || ""}
                     categorie={selectedRecipe?.categorie || ""}
-                    favoris={selectedRecipe?.favoris ? "Oui" : "Non"}
                     ingredients={selectedRecipe?.ingredients || []}
                     instructions={
                       Array.isArray(selectedRecipe?.instructions)

@@ -26,7 +26,9 @@ export default function Input({
 }: InputProps) {
   return (
     <div className="mt-4 m-auto items-center">
-      <label className="block text-sm/6 text-colortxt text-start">{label}</label>
+      <label className="block text-sm/6 text-colortxt text-start">
+        {label}
+      </label>
       <input
         autoComplete={autoComplete}
         type={type}

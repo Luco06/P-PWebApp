@@ -7,12 +7,16 @@ type ToggleSwitchProps = {
   label?: string;
 };
 
-export default function ToggleSwitch({ checked, onChange, label }: ToggleSwitchProps) {
+export default function ToggleSwitch({
+  checked,
+  onChange,
+  label,
+}: ToggleSwitchProps) {
   return (
     <label className="flex flex-col items-center cursor-pointer gap-2">
       {label && <span className="text-gray-700">{label}</span>}
-      <div 
-        role="switch" 
+      <div
+        role="switch"
         aria-checked={checked}
         tabIndex={0}
         onKeyDown={(e) => {

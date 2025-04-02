@@ -1,34 +1,38 @@
-"use client"
+"use client";
 import { HttpLink } from "@apollo/client";
-import { ApolloNextAppProvider, ApolloClient, InMemoryCache, } from "@apollo/experimental-nextjs-app-support";
-import dotenv from "dotenv"
+import {
+  ApolloNextAppProvider,
+  ApolloClient,
+  InMemoryCache,
+} from "@apollo/experimental-nextjs-app-support";
+import dotenv from "dotenv";
 import React from "react";
 
-dotenv.config
+dotenv.config;
 function makeClient() {
-    let token = null;
+  let token = null;
 
-    if (typeof window !== "undefined") {
-        token = localStorage.getItem("authToken");
-    }
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("authToken");
+  }
 
-    const httpLink = new HttpLink({
-        uri: process.env.NEXT_PUBLIC_API_URL,
-        headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-        },
-    });
+  const httpLink = new HttpLink({
+    uri: process.env.NEXT_PUBLIC_API_URL,
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
 
-    return new ApolloClient({
-        cache: new InMemoryCache(),
-        link: httpLink,
-    });
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: httpLink,
+  });
 }
 
-export function ApolloWrapper({children}: React.PropsWithChildren){
-    return (
-        <ApolloNextAppProvider makeClient={makeClient}>
-            {children}
-        </ApolloNextAppProvider>
-    )
+export function ApolloWrapper({ children }: React.PropsWithChildren) {
+  return (
+    <ApolloNextAppProvider makeClient={makeClient}>
+      {children}
+    </ApolloNextAppProvider>
+  );
 }

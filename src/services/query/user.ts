@@ -24,8 +24,32 @@ query User($userId: ID!) {
       instructions
       categorie
       img
+      dateCreation
+    }
+    favoris {
+      id
+      titre
+      description
+      ingredients
+      tps_prep
+      tps_cook
+      nb_person
+      dificulty
+      est_public
+      cout
+      note
+      instructions
+      categorie
+      img
       favoris
       dateCreation
+      commentaire {
+        contenu
+        auteur {
+          prenom
+        }
+        dateCreation
+      }
     }
   }
 }
