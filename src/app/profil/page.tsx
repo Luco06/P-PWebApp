@@ -71,7 +71,7 @@ export default function Profil() {
     setIsAddModal(!isAddModal);
   };
   console.log(recipes);
-  const publicRecipes = recipes.filter(
+  const publicRecipes = recipes?.filter(
     (recipe: RecipeType) => recipe.est_public === true
   );
   return (
@@ -96,7 +96,7 @@ export default function Profil() {
         </p>
         <InfoRecipes
           recettes={recipes?.length || 0}
-          publique={publicRecipes.length || 0}
+          publique={publicRecipes?.length || 0}
           favoris={userInfo?.favoris?.length || 0}
         />
         <CatePiles

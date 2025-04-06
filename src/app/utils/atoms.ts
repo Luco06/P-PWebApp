@@ -30,7 +30,15 @@ export type RecipeType = {
     prenom: string;
   };
   dateCreation: string;
-  commentaire: string[];
+  commentaire: {
+    id: string;
+    contenu: string;
+    dateCreation: string;
+    auteur: {
+      prenom: string;
+      avatar: string; 
+    };
+  }[];
 };
 
 export const UserAtom = atomWithStorage<UserType | null>("user", null);

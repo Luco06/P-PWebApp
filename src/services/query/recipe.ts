@@ -17,7 +17,6 @@ query Recettes {
     instructions
     categorie
     img
-    favoris
     auteur {
       prenom
     }
@@ -25,14 +24,12 @@ query Recettes {
     commentaire {
       id
       contenu
-      recette {
-        id
-      }
+      dateCreation
       auteur {
-        prenom
         avatar
-        
+        prenom
       }
+      dateCreation
     }
   }
 }

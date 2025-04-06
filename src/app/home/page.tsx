@@ -10,6 +10,7 @@ import { GET_RECIPE } from "@/services/query/recipe";
 import CardRecipesprofile from "../components/CardRecipesProfile";
 import CardRecipe from "../components/CardRecipe";
 import Button from "../components/Button";
+import Comments from "../components/Comments";
 export default function Acceuil() {
   const [user] = useAtom(UserAtom);
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
@@ -75,6 +76,16 @@ export default function Acceuil() {
                   txt="Fermer"
                 />
               </div>
+              <h4>Commentaire</h4>
+              {selectedRecipe?.commentaire.map((comment) => (
+                <Comments
+                  key={comment?.id}
+                  avatar={comment?.auteur.avatar}
+                  prenom={comment?.auteur.prenom}
+                  contenu={comment?.contenu}
+                  date={comment?.dateCreation}
+                />
+              ))}
             </div>
           </div>
         )}
