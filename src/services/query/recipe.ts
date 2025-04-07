@@ -26,6 +26,7 @@ query Recettes {
       contenu
       dateCreation
       auteur {
+        id
         avatar
         prenom
       }

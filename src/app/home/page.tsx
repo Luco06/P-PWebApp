@@ -8,6 +8,7 @@ import { RecipeType } from "../utils/atoms";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_RECIPE } from "@/services/query/recipe";
 import { ADD_COMMENT } from "@/services/mutations/AddComment";
+import { DELETE_COMMENT } from "@/services/mutations/DeleteComment";
 import CardRecipesprofile from "../components/CardRecipesProfile";
 import CardRecipe from "../components/CardRecipe";
 import Button from "../components/Button";
@@ -15,6 +16,8 @@ import Comments from "../components/Comments";
 import Input from "../components/Input";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { MdDeleteForever } from "react-icons/md";
+
 
 export default function Acceuil() {
   const formatDate = (timestamp: string): string => {
@@ -48,9 +51,9 @@ export default function Acceuil() {
       return;
     }
     setToken(storedToken);
-  }, [data, setRecipes, user]);
+  }, [data, setRecipes, user, setSelectedRecipe]);
 
-  const [CreateComment, { error }] = useMutation(ADD_COMMENT, {
+  const [CreateComment, {}] = useMutation(ADD_COMMENT, {
     context: {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,6 +65,38 @@ export default function Acceuil() {
       setCommentaire("");
     },
   });
+  const [DeleteComment] = useMutation(DELETE_COMMENT, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    refetchQueries: [{ query: GET_RECIPE }],
+    onCompleted: (data) => {
+      alert("Commentaire supprimé !");
+      // Filtrer le commentaire supprimé
+      if (selectedRecipe) {
+        setSelectedRecipe((prevSelectedRecipe) => {
+          if (prevSelectedRecipe) {
+            // Vérifiez que prevSelectedRecipe n'est pas null
+            return {
+              ...prevSelectedRecipe,
+              commentaire: prevSelectedRecipe.commentaire.filter(
+                (comment) => comment.id !== data.deleteComment.id // Assurez-vous que cette ligne est correcte selon votre mutation
+              ),
+            };
+          }
+          return prevSelectedRecipe; // Renvoie l'état précédent s'il est null
+        });
+      }
+    },
+  });  
+  const handleDeleteComment = (commentId: string) => {
+    if (!commentId) return;
+    DeleteComment({
+      variables: { deleteCommentId: commentId },
+    });
+  };
   
   const handleAddComment = () => {
     if (!user?.id || !selectedRecipe?.id || !commentaire.trim()) {
@@ -83,8 +118,7 @@ export default function Acceuil() {
     setSelectedRecipe(recipe);
     setIsModalOpen(true);
   };
-  console.log(recipes);
-  console.log(commentaire, "Commentaire");
+
   return (
     <div>
       <Header
@@ -130,15 +164,26 @@ export default function Acceuil() {
                 />
               </div>
               <div>
-                <h4 className="text-center">Commentaire</h4>
+                <h5 className="text-center font-extrabold m-2">Commentaire</h5>
                 {selectedRecipe?.commentaire.map((comment) => (
-                  <Comments
+                  <div
                     key={comment?.id}
-                    avatar={comment?.auteur.avatar}
-                    prenom={comment?.auteur.prenom}
-                    contenu={comment?.contenu}
-                    date={formatDate(comment?.dateCreation)}
-                  />
+                    className="flex flex-row items-center, justify-between"
+                  >
+                    <Comments
+                      avatar={comment?.auteur.avatar}
+                      prenom={comment?.auteur.prenom}
+                      contenu={comment?.contenu}
+                      date={formatDate(comment?.dateCreation)}
+                    />
+                    {user?.id === comment?.auteur.id && (
+                      <MdDeleteForever
+                        onClick={() => handleDeleteComment(comment?.id)}
+                        size={20}
+                        className="fill-redpapilles cursor-pointer"
+                      />
+                    )}
+                  </div>
                 ))}
                 {user && (
                   <>
@@ -158,7 +203,6 @@ export default function Acceuil() {
                       type="button"
                       className="text-redpapilles w-50 border boder-redpapilles"
                       txt="Envoyer"
-                      
                     />
                   </>
                 )}

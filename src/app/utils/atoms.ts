@@ -35,6 +35,7 @@ export type RecipeType = {
     contenu: string;
     dateCreation: string;
     auteur: {
+      id: string;
       prenom: string;
       avatar: string; 
     };
