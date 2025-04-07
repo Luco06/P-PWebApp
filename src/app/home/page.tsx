@@ -11,7 +11,22 @@ import CardRecipesprofile from "../components/CardRecipesProfile";
 import CardRecipe from "../components/CardRecipe";
 import Button from "../components/Button";
 import Comments from "../components/Comments";
+import { formatDistanceToNow } from 'date-fns';
+import {fr} from 'date-fns/locale'
+
 export default function Acceuil() {
+
+  const formatDate = (timestamp: string): string => {
+    const dateInMillis = parseInt(timestamp, 10); // Convertir en nombre
+    if (isNaN(dateInMillis)) {
+      return "Date invalide"; // Gérer le cas où la conversion échoue
+    }
+    
+    const date = new Date(dateInMillis); // Créer un objet Date à partir du timestamp
+    return formatDistanceToNow(date, { addSuffix: true,locale:fr });
+  };
+  
+  
   const [user] = useAtom(UserAtom);
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,14 +91,14 @@ export default function Acceuil() {
                   txt="Fermer"
                 />
               </div>
-              <h4>Commentaire</h4>
+              <h4 className="text-center">Commentaire</h4>
               {selectedRecipe?.commentaire.map((comment) => (
                 <Comments
                   key={comment?.id}
                   avatar={comment?.auteur.avatar}
                   prenom={comment?.auteur.prenom}
                   contenu={comment?.contenu}
-                  date={comment?.dateCreation}
+                  date={formatDate(comment?.dateCreation)}
                 />
               ))}
             </div>
