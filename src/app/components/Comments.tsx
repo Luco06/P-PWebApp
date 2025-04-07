@@ -31,7 +31,7 @@ export default function Comments({
       </div>
       <div className="flex flex-col items-center justify-center">
         <p>{contenu}</p>
-        <p>Il y a {date}</p>
+        <p>{date}</p>
       </div>
     </div>
   );
