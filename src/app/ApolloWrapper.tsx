@@ -8,7 +8,7 @@ import {
 import dotenv from "dotenv";
 import React from "react";
 
-dotenv.config;
+dotenv.config();
 function makeClient() {
   let token = null;
 

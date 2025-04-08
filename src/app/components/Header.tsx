@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 type Header = {
   avatar?: string;
-  pseudo?: String;
+  pseudo?: string;
 };
 
 export default function Header({ avatar, pseudo }: Header) {
@@ -95,7 +95,7 @@ export default function Header({ avatar, pseudo }: Header) {
                 href="/singin"
                 className="block px-4 py-2 text-gray-700 hover:bg-redpapilles hover:text-white"
               >
-                S'inscrire
+                S&apos;inscrire
               </Link>
               <Link
                 href="/login"

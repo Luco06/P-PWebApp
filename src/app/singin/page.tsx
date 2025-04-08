@@ -15,14 +15,14 @@ export default function SignIn() {
     mdp: "",
   });
   const router = useRouter();
-  const [createUser, { loading, data, error }] = useMutation(SINGN_USER, {
+  const [createUser, {}] = useMutation(SINGN_USER, {
     onCompleted(data) {
       console.log(data, "UserIsncription");
       router.push("/login");
     },
   });
 
-  const handleSingn = async (e: any) => {
+  const handleSingn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await createUser({ variables: { input: userInfo } });

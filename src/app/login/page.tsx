@@ -9,15 +9,15 @@ import { useSetAtom } from "jotai";
 import { UserAtom } from "../utils/atoms";
 import Input from "../components/Input";
 import Button from "../components/Button";
-type FormProps = {};
 
-export default function FormLogIn({}: FormProps) {
+
+export default function FormLogIn() {
   const [email, setEmail] = useState("");
   const [mdp, setMdp] = useState("");
   const setUser = useSetAtom(UserAtom);
 
   const router = useRouter();
-  const [loginUser, { loading, data, error }] = useMutation(LOGIN_USER, {
+  const [loginUser, {error }] = useMutation(LOGIN_USER, {
     onCompleted(data) {
       console.log(data, "User");
       setUser(data.loginUser.user);
@@ -26,7 +26,7 @@ export default function FormLogIn({}: FormProps) {
     },
   });
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await loginUser({ variables: { email, mdp } });

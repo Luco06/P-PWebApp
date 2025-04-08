@@ -132,10 +132,10 @@ export default function AddRecipe({ setIsAddModal }: AddRecipeProps) {
       alert("Recette Ajouter !");
     },
   });
-  const handleCreate = async (e: any) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const filteredCreate = Object.fromEntries(
-      Object.entries(addRecipe).filter(([_, value]) => value !== "")
+      Object.entries(addRecipe).filter(([_unused, value]) => value !== "")
     );
     if (Object.keys(filteredCreate).length === 0) {
       alert("Aucuns champs envoyer.");

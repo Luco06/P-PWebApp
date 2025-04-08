@@ -47,7 +47,7 @@ export default function Profil() {
       setRecipes(data?.user.recettes);
       setFilteredRecipes(data?.user.recettes);
     }
-  }, [userInfo]);
+  }, [userInfo, data?.user.recettes]);
 
   const handleSelectCategory = (category: string) => {
     const newCategory = selectedCategory === category ? null : category;

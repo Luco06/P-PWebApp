@@ -13,9 +13,7 @@ import { CiHome } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import Link from "next/link";
 
-type Props = {};
-
-export default function Setting({}: Props) {
+export default function Setting() {
   const userInfo = useAtomValue(UserAtom);
   const [token, setToken] = useState<string | null>(null);
   const [userUpdate, setUserUpdate] = useState({
@@ -32,14 +30,14 @@ export default function Setting({}: Props) {
     }
   }, [userInfo]);
 
-  const [updateUser, { loading, data, error }] = useMutation(UPDATE_USER, {
+  const [updateUser, {}] = useMutation(UPDATE_USER, {
     context: {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     },
     refetchQueries: [{ query: GET_USER, variables: { userId: userInfo?.id } }],
-    onCompleted(data) {
+    onCompleted() {
       alert("Profile mise à jour !");
     },
   });
@@ -54,7 +52,7 @@ export default function Setting({}: Props) {
     }
   };
 
-  const handleUpdate = async (e: any) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userInfo) {
       alert(
