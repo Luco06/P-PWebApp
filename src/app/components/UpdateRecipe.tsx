@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_RECIPE } from "@/services/mutations/updateRecipe";
 import { RecipeType } from "../utils/atoms";
 import { GET_USER } from "@/services/query/user";
+import { DELETE_RECIPE } from "@/services/mutations/deleteRecipe";
 import { useAtomValue } from "jotai";
 import { UserAtom } from "../utils/atoms";
 import SelectOption from "./SelectOption";
@@ -133,6 +134,18 @@ export default function UpdateRecipe({
     onCompleted: () => {
       setIsModalOpen(false);
       alert("Recette mise à jour !");
+    },
+  });
+  const [DeleteRecette] = useMutation(DELETE_RECIPE, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    refetchQueries: [{ query: GET_USER, variables: { userId: userInfo?.id } }],
+    onCompleted: () => {
+      setIsModalOpen(false);
+      alert("Recette supprimer !");
     },
   });
   return (
@@ -341,6 +354,16 @@ export default function UpdateRecipe({
           txt="Fermer"
         />
       </div>
+      <Button
+        onClick={() => {
+          DeleteRecette({
+            variables: { deleteRecetteId: recipe?.id },
+          });
+        }}
+        txt="Supprimer la recette"
+        type="button"
+        className="text-redpapilles w-50 hover:border boder-redpapilles"
+      />
     </div>
   );
 }
