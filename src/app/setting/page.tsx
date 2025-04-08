@@ -9,6 +9,9 @@ import { useAtomValue } from "jotai";
 import { useMutation } from "@apollo/client";
 import { UPDATE_USER } from "@/services/mutations/updateUser";
 import { GET_USER } from "@/services/query/user";
+import { CiHome } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
+import Link from "next/link";
 
 type Props = {};
 
@@ -80,13 +83,33 @@ export default function Setting({}: Props) {
   };
   return (
     <>
-      <div className="flex flex-col items-center jutify-center  m-auto w-lg mt-10">
-        <Avatar
-          src={userInfo?.avatar || "/bobMartin.svg"}
-          width={100}
-          height={100}
-          alt="Bob"
-        />
+      <div className="flex flex-col items-center jutify-center  m-auto w-full mt-10">
+        <div className="grid grid-cols-3 sm:grid-cols-[1fr_auto_1fr] w-full p-4 sm:p-10 items-center">
+          <Link href="/home" className="justify-self-start">
+            <CiHome
+              size={40}
+              className="fill-redpapilles cursor-pointer"
+              onClick={() => console.log()}
+            />
+          </Link>
+
+          <Avatar
+            src={userInfo?.avatar || "/bobMartin.svg"}
+            alt={userInfo?.prenom || "bob"}
+            width={70}
+            height={70}
+            className="justify-self-center"
+          />
+
+          <Link href="/profil" className="justify-self-end">
+            <CiUser
+              size={40}
+              className="fill-redpapilles cursor-pointer"
+              onClick={() => console.log()}
+            />
+          </Link>
+        </div>
+
         <Input
           type="file"
           name="avatar"
