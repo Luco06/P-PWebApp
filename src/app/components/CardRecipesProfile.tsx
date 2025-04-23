@@ -17,7 +17,7 @@ export default function CardRecipesprofile({
   onClick,
 }: CardProfileRecipeProps) {
   return (
-    <button onClick={onClick}>
+    <button className="cursor-pointer" onClick={onClick}>
       <div
         className="flex flex-col items-center justify-between rounded-lg m-5 drop-shadow-md border w-xs h-50 bg-cover bg-center text-white font-extrabold relative"
         style={{ backgroundImage: `url(${bgImage})` }}

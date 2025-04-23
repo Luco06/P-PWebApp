@@ -17,7 +17,7 @@ import Input from "../components/Input";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { MdDeleteForever } from "react-icons/md";
-
+import { IoIosClose } from "react-icons/io";
 
 export default function Acceuil() {
   const formatDate = (timestamp: string): string => {
@@ -90,14 +90,14 @@ export default function Acceuil() {
         });
       }
     },
-  });  
+  });
   const handleDeleteComment = (commentId: string) => {
     if (!commentId) return;
     DeleteComment({
       variables: { deleteCommentId: commentId },
     });
   };
-  
+
   const handleAddComment = () => {
     if (!user?.id || !selectedRecipe?.id || !commentaire.trim()) {
       alert("Le commentaire ne peut pas être vide.");
@@ -139,6 +139,13 @@ export default function Acceuil() {
         {isModalOpen && (
           <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center overflow-y-auto">
             <div className="bg-white p-4 rounded max-w-lg shadow-lg max-h-[80vh] overflow-y-auto">
+              <div className="flex justify-end">
+                <IoIosClose
+                  onClick={() =>  setIsModalOpen(false)}
+                  size={40}
+                  className="fill-redpapilles cursor-pointer"
+                />
+              </div>
               <CardRecipe
                 titre={selectedRecipe?.titre || ""}
                 dificulty={selectedRecipe?.dificulty || ""}

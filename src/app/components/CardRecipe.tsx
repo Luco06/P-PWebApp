@@ -31,7 +31,7 @@ export default function CardRecipe({
     <div className="flex flex-col items-center justify-between rounded-lg m-auto p-1 drop-shadow-md  w-full  font-extrabold relative bg-scroll">
       <div className="bg-redpapilles w-full border-8 border-redpapilles rounded-t-lg text-center text-white drop-shadow-md">
         <h4 className="drop-shadow-md">{titre}</h4>
-        <h5 className="drop-shadow-md"> Par: {auteur}</h5>
+        <h4 className="drop-shadow-md"> Par: {auteur}</h4>
       </div>
       <div className="flex-grow relative w-full h-[300px]">
         <Image src={bgImage} alt={titre} fill className="object-cover" />
