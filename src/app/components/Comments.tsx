@@ -29,9 +29,9 @@ export default function Comments({
         </div>
         <p>{prenom}</p>
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <p>{contenu}</p>
-        <p>{date}</p>
+      <div className="flex flex-col items-center justify-center ">
+        <p className="dark:text-black">{contenu}</p>
+        <p className="dark:text-black">{date}</p>
       </div>
     </div>
   );

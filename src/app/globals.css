@@ -24,18 +24,15 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-  label {
-    color: var(--colortxt);
+  label,
+  li,
+  h3,
+  p {
+    color: var(--foreground);
   }
-  h3 {
-    color: var(--colortxt);
-  }
+  li,
   h5 {
-    color: var(--colortxt);
-  }
-  li {
-    font-size: var(--p);
-    color: var(--colortxt);
+    color: var(--background);
   }
 }
 @layer base {

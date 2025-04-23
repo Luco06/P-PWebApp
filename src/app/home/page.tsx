@@ -170,7 +170,7 @@ export default function Acceuil() {
                   txt="Fermer"
                 />
               </div>
-              <div>
+              <div className="bg-white dark:bg-zinc-900 rounded-md ">
                 <h5 className="text-center font-extrabold m-2">Commentaire</h5>
                 {selectedRecipe?.commentaire.map((comment) => (
                   <div
