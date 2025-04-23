@@ -24,6 +24,12 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+  label {
+    color: var(--colortxt);
+  }
+  h3 {
+    color: var(--colortxt);
+  }
   h5 {
     color: var(--colortxt);
   }
