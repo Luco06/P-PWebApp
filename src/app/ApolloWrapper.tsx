@@ -17,7 +17,7 @@ function makeClient() {
   }
 
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL,
+    uri: process.env.NEXT_PUBLIC_PROD_API,
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
     },
