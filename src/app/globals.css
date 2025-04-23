@@ -24,6 +24,13 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+  h5 {
+    color: var(--colortxt);
+  }
+  li {
+    font-size: var(--p);
+    color: var(--colortxt);
+  }
 }
 @layer base {
   p {
